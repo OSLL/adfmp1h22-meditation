@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/meditation_navigation"
+    android:label="@string/home"
+    app:startDestination="@id/home">
+
+    <fragment
+        android:id="@+id/home"
+        android:name="ru.hse.myapplication.ui.home.HomeFragment"
+        android:label="@string/home" />
+    <fragment
+        android:id="@+id/meditations"
+        android:name="ru.hse.myapplication.ui.dashboard.MeditationsFragment"
+        android:label="@string/meditations" />
+    <fragment
+        android:id="@+id/course"
+        android:name="ru.hse.myapplication.ui.notifications.CourseFragment"
+        android:label="@string/course" />
+    <fragment
+        android:id="@+id/history"
+        android:name="ru.hse.myapplication.ui.home.HistoryFragment"
+        android:label="@string/history" />
+</navigation>
