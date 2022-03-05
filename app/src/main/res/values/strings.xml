@@ -16,4 +16,10 @@
     <string name="comment">Comment</string>
     <string name="write_comment">Write your comment here</string>
     <string name="edit_entry">Edit entry</string>
+    <string name="profile_picture">Profile picture</string>
+    <string name="meditation_statistics">Meditation statistics</string>
+    <string name="today">Today:</string>
+    <string name="this_week">This week:</string>
+    <string name="meditation_of_the_day">Meditation of the day</string>
+    <string name="favorite_meditations">Your favorite meditations</string>
 </resources>
