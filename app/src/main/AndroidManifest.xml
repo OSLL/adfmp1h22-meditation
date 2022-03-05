@@ -10,6 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HSEMeditationApp">
         <activity
+            android:name=".EditEntryActivity"
+            android:exported="false"
+            android:label="@string/edit_entry" />
+        <activity
             android:name=".TestActivity"
             android:exported="false"
             android:label="@string/history" />

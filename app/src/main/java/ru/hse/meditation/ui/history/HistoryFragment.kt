@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import ru.hse.meditation.CustomRecyclerAdapter
 import ru.hse.meditation.databinding.FragmentHistoryBinding
 
 class HistoryFragment : Fragment() {
@@ -22,16 +22,14 @@ class HistoryFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HistoryViewModel::class.java)
-
         _binding = FragmentHistoryBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
+        binding.historyList.layoutManager = LinearLayoutManager(activity)
+        binding.historyList.adapter = CustomRecyclerAdapter(
+            mutableListOf("A", "b", "C", "A", "b", "C", "A", "b", "C", "A", "b", "C", "A", "b", "C"),
+            this
+        )
         return root
     }
 

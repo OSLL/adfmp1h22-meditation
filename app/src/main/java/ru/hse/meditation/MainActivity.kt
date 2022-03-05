@@ -1,7 +1,6 @@
 package ru.hse.meditation
 
 import android.os.Bundle
-import android.view.Menu
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
