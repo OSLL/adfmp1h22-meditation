@@ -1,4 +1,4 @@
-package ru.hse.myapplication.ui.home
+package ru.hse.meditation.ui.history
 
 import android.os.Bundle
 import android.view.LayoutInflater

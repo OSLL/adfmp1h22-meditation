@@ -7,4 +7,7 @@
     <string name="meditations">Meditations</string>
     <string name="course">Course</string>
     <string name="history">History</string>
+    <string name="change_course">Change course</string>
+    <string name="settings">Settings</string>
+    <string name="about">About</string>
 </resources>

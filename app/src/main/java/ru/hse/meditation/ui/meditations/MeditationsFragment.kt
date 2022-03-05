@@ -1,4 +1,4 @@
-package ru.hse.myapplication.ui.dashboard
+package ru.hse.meditation.ui.meditations
 
 import android.os.Bundle
 import android.view.LayoutInflater

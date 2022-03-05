@@ -7,18 +7,18 @@
 
     <fragment
         android:id="@+id/home"
-        android:name="ru.hse.myapplication.ui.home.HomeFragment"
+        android:name="ru.hse.meditation.ui.home.HomeFragment"
         android:label="@string/home" />
     <fragment
         android:id="@+id/meditations"
-        android:name="ru.hse.myapplication.ui.dashboard.MeditationsFragment"
+        android:name="ru.hse.meditation.ui.meditations.MeditationsFragment"
         android:label="@string/meditations" />
     <fragment
         android:id="@+id/course"
-        android:name="ru.hse.myapplication.ui.notifications.CourseFragment"
+        android:name="ru.hse.meditation.ui.course.CourseFragment"
         android:label="@string/course" />
     <fragment
         android:id="@+id/history"
-        android:name="ru.hse.myapplication.ui.home.HistoryFragment"
+        android:name="ru.hse.meditation.ui.history.HistoryFragment"
         android:label="@string/history" />
 </navigation>
