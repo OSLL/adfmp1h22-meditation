@@ -1,11 +1,12 @@
 package ru.hse.meditation
 
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
-class TestActivity : ActivityWithOptionsMenu() {
+class EditEntryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_test)
+        setContentView(R.layout.activity_edit_entry)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
