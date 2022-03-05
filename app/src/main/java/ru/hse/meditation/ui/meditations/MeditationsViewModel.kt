@@ -1,4 +1,4 @@
-package ru.hse.myapplication.ui.dashboard
+package ru.hse.meditation.ui.meditations
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

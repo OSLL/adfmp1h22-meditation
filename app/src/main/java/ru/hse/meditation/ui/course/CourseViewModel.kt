@@ -1,4 +1,4 @@
-package ru.hse.myapplication.ui.notifications
+package ru.hse.meditation.ui.course
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
