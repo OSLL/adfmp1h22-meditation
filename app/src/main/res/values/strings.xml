@@ -25,4 +25,5 @@
     <string name="favorite">Favorite</string>
     <string name="recent">Recent</string>
     <string name="all">All</string>
+    <string name="start">Start</string>
 </resources>

@@ -27,7 +27,8 @@ class MeditationsTabFragment(private val list: List<String>) : Fragment() {
 
         binding.meditationsList.layoutManager = LinearLayoutManager(activity)
         binding.meditationsList.adapter = MeditationsAdapter(
-            list.toMutableList()
+            list.toMutableList(),
+            this
         )
 
         return root
