@@ -22,4 +22,7 @@
     <string name="this_week">This week:</string>
     <string name="meditation_of_the_day">Meditation of the day</string>
     <string name="favorite_meditations">Your favorite meditations</string>
+    <string name="favorite">Favorite</string>
+    <string name="recent">Recent</string>
+    <string name="all">All</string>
 </resources>
