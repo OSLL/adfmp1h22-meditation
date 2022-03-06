@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.tabs.TabLayoutMediator
+import ru.hse.meditation.R
 import ru.hse.meditation.databinding.FragmentMeditationsBinding
 
 class MeditationsFragment : Fragment() {
@@ -22,16 +22,18 @@ class MeditationsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val dashboardViewModel =
-            ViewModelProvider(this).get(MeditationsViewModel::class.java)
-
         _binding = FragmentMeditationsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textDashboard
-        dashboardViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
+        binding.viewPager.adapter = MeditationsTabAdapter(requireActivity())
+        TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
+            when (position) {
+                0 -> tab.text = getString(R.string.favorite)
+                1 -> tab.text = getString(R.string.recent)
+                2 -> tab.text = getString(R.string.all)
+            }
+        }.attach()
+
         return root
     }
 
