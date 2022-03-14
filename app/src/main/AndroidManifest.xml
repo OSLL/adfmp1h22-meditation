@@ -14,6 +14,10 @@
             android:exported="false"
             android:label="@string/add_course"/>
         <activity
+            android:name=".CreateCourseActivity"
+            android:exported="false"
+            android:label="@string/create_course"/>
+        <activity
             android:name=".ChangeCourseActivity"
             android:exported="false"
             android:label="@string/change_course"/>
