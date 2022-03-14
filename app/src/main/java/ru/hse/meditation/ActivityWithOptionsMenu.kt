@@ -1,5 +1,6 @@
 package ru.hse.meditation
 
+import android.content.Intent
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -15,6 +16,8 @@ abstract class ActivityWithOptionsMenu : AppCompatActivity() {
         return when (item.itemId) {
             R.id.change_course -> {
                 Log.d("TAG", "Change course")
+                val intent = Intent(applicationContext, ChangeCourseActivity::class.java)
+                startActivity(intent)
                 true
             }
             R.id.settings -> {
