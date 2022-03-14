@@ -22,6 +22,10 @@
             android:exported="false"
             android:label="@string/change_course"/>
         <activity
+            android:name=".CourseInfoActivity"
+            android:exported="false"
+            android:label="@string/course_info"/>
+        <activity
             android:name=".MeditationInfoActivity"
             android:exported="false" />
         <activity

@@ -2,9 +2,11 @@ package ru.hse.meditation
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ListView
+
 
 class AddCourseActivity : ActionWithBackButton() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,6 +25,15 @@ class AddCourseActivity : ActionWithBackButton() {
         val newCourseButton: Button = findViewById(R.id.new_course)
         newCourseButton.setOnClickListener {
             val intent = Intent(applicationContext, CreateCourseActivity::class.java)
+            startActivity(intent)
+        }
+
+        listOfCourses.isClickable = true
+        listOfCourses.onItemClickListener = OnItemClickListener { arg0, arg1, position, arg3 ->
+            val course = listOfCourses.getItemAtPosition(position)
+
+            val intent = Intent(applicationContext, CourseInfoActivity::class.java)
+            intent.putExtra("course", course.toString())
             startActivity(intent)
         }
     }
