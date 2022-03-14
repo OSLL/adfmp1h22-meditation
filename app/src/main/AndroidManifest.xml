@@ -10,6 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HSEMeditationApp">
         <activity
+            android:name=".ChangeCourseActivity"
+            android:exported="false"
+            android:label="@string/change_course"/>
+        <activity
             android:name=".MeditationInfoActivity"
             android:exported="false" />
         <activity
