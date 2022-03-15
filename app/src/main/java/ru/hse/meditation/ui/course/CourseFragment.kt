@@ -13,6 +13,7 @@ import android.widget.ListView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import ru.hse.meditation.MeditationInfoActivity
+import ru.hse.meditation.TheoryActivity
 import ru.hse.meditation.databinding.FragmentCourseBinding
 
 
@@ -56,7 +57,21 @@ class CourseFragment : Fragment() {
         context?.let { context ->
             val listView1 = binding.theoryList
             val listView2 = binding.practiceList
-            listView1.setOnItemClickListener { parent: AdapterView<*>, view: View, position: Int, id: Long -> }
+            listView1.setOnItemClickListener { parent: AdapterView<*>, view: View, position: Int, id: Long ->
+                val myIntent = Intent(activity, TheoryActivity::class.java)
+                myIntent.putExtra(
+                    "description", """
+                this
+                is
+                theory
+
+                for
+                ${dataPractice[position]}
+                !!!
+            """.trimIndent()
+                )
+                startActivity(myIntent)
+            }
 
             listView2.setOnItemClickListener { parent: AdapterView<*>, view: View, position: Int, id: Long ->
                 val myIntent = Intent(activity, MeditationInfoActivity::class.java)
