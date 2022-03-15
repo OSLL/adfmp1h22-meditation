@@ -1,15 +1,18 @@
 package ru.hse.meditation.ui.course
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListAdapter
 import android.widget.ListView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import ru.hse.meditation.MeditationInfoActivity
 import ru.hse.meditation.databinding.FragmentCourseBinding
 
 
@@ -53,6 +56,24 @@ class CourseFragment : Fragment() {
         context?.let { context ->
             val listView1 = binding.theoryList
             val listView2 = binding.practiceList
+            listView1.setOnItemClickListener { parent: AdapterView<*>, view: View, position: Int, id: Long -> }
+
+            listView2.setOnItemClickListener { parent: AdapterView<*>, view: View, position: Int, id: Long ->
+                val myIntent = Intent(activity, MeditationInfoActivity::class.java)
+                myIntent.putExtra(
+                    "description", """
+                this
+                is
+                description
+
+                of
+                ${dataPractice[position]}
+                !!!
+            """.trimIndent()
+                )
+                startActivity(myIntent)
+            }
+
             listView1.adapter =
                 ArrayAdapter(context, android.R.layout.simple_list_item_1, dataTheory)
             listView2.adapter =
