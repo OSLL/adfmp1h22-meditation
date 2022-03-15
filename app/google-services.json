@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1006738092618",
+    "project_id": "hse-meditaion-app",
+    "storage_bucket": "hse-meditaion-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1006738092618:android:c22b39e8f08b74b33aecb3",
+        "android_client_info": {
+          "package_name": "ru.hse.meditation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1006738092618-nkugces5qccu77js8r0iqjv0lqde89ae.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_2PByXRFUYp-gXEW4b2LIN2qAlT2vN6c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1006738092618-nkugces5qccu77js8r0iqjv0lqde89ae.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
