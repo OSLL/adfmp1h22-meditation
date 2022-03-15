@@ -29,6 +29,9 @@
             android:name=".MeditationInfoActivity"
             android:exported="false" />
         <activity
+            android:name=".TheoryActivity"
+            android:exported="false" />
+        <activity
             android:name=".EditEntryActivity"
             android:exported="false"
             android:label="@string/edit_entry" />
