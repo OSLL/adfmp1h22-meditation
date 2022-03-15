@@ -26,6 +26,9 @@
             android:exported="false"
             android:label="@string/course_info"/>
         <activity
+            android:name=".MeditationActivity"
+            android:exported="false" />
+        <activity
             android:name=".MeditationInfoActivity"
             android:exported="false" />
         <activity
