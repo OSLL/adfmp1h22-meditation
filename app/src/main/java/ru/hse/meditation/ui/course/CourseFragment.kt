@@ -1,12 +1,15 @@
 package ru.hse.meditation.ui.course
 
-import android.content.Intent
+
 import android.os.Bundle
-import android.view.*
-import android.widget.TextView
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.ListAdapter
+import android.widget.ListView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import ru.hse.meditation.TestActivity
 import ru.hse.meditation.databinding.FragmentCourseBinding
 
 
@@ -17,28 +20,46 @@ class CourseFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private val dataTheory = (1..10).map { "Theory $it"}
+    private val dataPractice = (1..10).map { "Practice $it"}
+
+
+    private fun justifyListViewHeightBasedOnChildren(listView: ListView) {
+        val adapter: ListAdapter = listView.adapter ?: return
+        val vg: ViewGroup = listView
+        var totalHeight = 0
+        for (i in 0 until adapter.count) {
+            val listItem: View = adapter.getView(i, null, vg)
+            listItem.measure(0, 0)
+            totalHeight += listItem.measuredHeight
+        }
+        val par: ViewGroup.LayoutParams = listView.layoutParams
+        par.height = totalHeight + listView.dividerHeight * (adapter.count - 1)
+        listView.layoutParams = par
+        listView.requestLayout()
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val notificationsViewModel =
-            ViewModelProvider(this).get(CourseViewModel::class.java)
+        ViewModelProvider(this).get(CourseViewModel::class.java)
 
         _binding = FragmentCourseBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textNotifications
-        notificationsViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+        context?.let { context ->
+            val listView1 = binding.theoryList
+            val listView2 = binding.practiceList
+            listView1.adapter =
+                ArrayAdapter(context, android.R.layout.simple_list_item_1, dataTheory)
+            listView2.adapter =
+                ArrayAdapter(context, android.R.layout.simple_list_item_1, dataPractice)
+            justifyListViewHeightBasedOnChildren(listView1)
+            justifyListViewHeightBasedOnChildren(listView2)
         }
-
-        binding.testButton.setOnClickListener {
-            val myIntent = Intent(activity, TestActivity::class.java)
-            startActivity(myIntent)
-        }
-
         return root
     }
 
