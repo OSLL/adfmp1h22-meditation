@@ -4,9 +4,6 @@
         android:id="@+id/change_course"
         android:title="@string/change_course" />
     <item
-        android:id="@+id/settings"
-        android:title="@string/settings" />
-    <item
         android:id="@+id/about"
         android:title="@string/about" />
 </menu>
