@@ -20,12 +20,10 @@ abstract class ActivityWithOptionsMenu : AppCompatActivity() {
                 startActivity(intent)
                 true
             }
-            R.id.settings -> {
-                Log.d("TAG", "Settings")
-                true
-            }
             R.id.about -> {
                 Log.d("TAG", "About")
+                val intent = Intent(applicationContext, AboutActivity::class.java)
+                startActivity(intent)
                 true
             }
             else -> super.onOptionsItemSelected(item)
