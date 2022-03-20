@@ -1,8 +1,6 @@
 package ru.hse.meditation.model.entity
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
+import androidx.room.*
 import java.util.*
 
 @Entity(
@@ -11,7 +9,8 @@ import java.util.*
         entity = Practice::class,
         parentColumns = ["course_id", "level", "order"],
         childColumns = ["course_id", "level", "order"]
-    )]
+    )],
+    indices = [Index("course_id", "level", "order")]
 )
 data class PracticeRecord(
     @ColumnInfo(name = "course_id")
@@ -21,5 +20,7 @@ data class PracticeRecord(
     @ColumnInfo(name = "date_time")
     val dateTime: Date,
     val duration: Int,
-    var comment: String
+    var comment: String,
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0
 )

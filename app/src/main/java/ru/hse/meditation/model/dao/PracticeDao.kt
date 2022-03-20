@@ -9,7 +9,7 @@ interface PracticeDao {
     @Query("SELECT * FROM practice ORDER BY name")
     fun getAll(): LiveData<List<Practice>>
 
-    @Query("SELECT * FROM practice ORDER BY last_practice_time DESC LIMIT 10")
+    @Query("SELECT * FROM practice ORDER BY last_practice_date_time DESC LIMIT 10")
     fun getRecent(): LiveData<List<Practice>>
 
     @Query("SELECT * FROM practice WHERE is_favorite = 1 ORDER BY name")
@@ -20,14 +20,14 @@ interface PracticeDao {
         WHERE course_id = :courseId AND level = :level
         ORDER BY `order` ASC
     """)
-    fun getLevelPractice(courseId: String, level: Int): List<Practice>
+    suspend fun getLevelPractice(courseId: String, level: Int): List<Practice>
 
     @Insert
-    fun insert(entries: List<Practice>)
+    suspend fun insert(entries: List<Practice>)
 
     @Update
-    fun update(practice: Practice)
+    suspend fun update(practice: Practice)
 
-    @Delete(entity = Practice::class)
-    fun deleteCoursePractice(courseId: String)
+    @Query("DELETE FROM practice WHERE course_id = :courseId")
+    suspend fun deleteCoursePractice(courseId: String)
 }

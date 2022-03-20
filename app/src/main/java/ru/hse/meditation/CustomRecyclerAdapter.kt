@@ -8,11 +8,17 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import ru.hse.meditation.model.entity.PracticeRecord
 
 class CustomRecyclerAdapter(
-    private val names: MutableList<String>,
     private val fragment: Fragment
 ) : RecyclerView.Adapter<CustomRecyclerAdapter.MyViewHolder>() {
+    private var data = emptyList<PracticeRecord>()
+
+    fun setData(newData: List<PracticeRecord>) {
+        data = newData
+        notifyDataSetChanged()
+    }
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textView: TextView = itemView.findViewById(R.id.textView)
@@ -28,9 +34,10 @@ class CustomRecyclerAdapter(
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.textView.text = names[position]
-        holder.dateTextView.text = "2022/04/02"
-        holder.timeTextView.text = "1 hour"
+        val record = data[position]
+        holder.textView.text = record.courseId
+        holder.dateTextView.text = record.dateTime.toString()
+        holder.timeTextView.text = "${record.duration}"
         holder.itemView.setOnClickListener {
             Log.d("TAG", position.toString())
             val myIntent = Intent(fragment.activity, EditEntryActivity::class.java)
@@ -38,5 +45,5 @@ class CustomRecyclerAdapter(
         }
     }
 
-    override fun getItemCount(): Int = names.size
+    override fun getItemCount(): Int = data.size
 }

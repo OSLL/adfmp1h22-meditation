@@ -13,11 +13,11 @@ interface TheoryDao {
         WHERE course_id = :courseId AND level = :level
         ORDER BY `order` ASC
     """)
-    fun getLevelTheory(courseId: String, level: Int): List<Theory>
+    suspend fun getLevelTheory(courseId: String, level: Int): List<Theory>
 
     @Insert
-    fun insert(entries: List<Theory>)
+    suspend fun insert(entries: List<Theory>)
 
-    @Delete(entity = Theory::class)
-    fun deleteCourseTheory(courseId: String)
+    @Query("DELETE FROM theory WHERE course_id = :courseId")
+    suspend fun deleteCourseTheory(courseId: String)
 }

@@ -6,15 +6,15 @@ import ru.hse.meditation.model.entity.PracticeRecord
 
 @Dao
 interface PracticeRecordDao {
-    @Query("SELECT * FROM practice_record ORDER BY dateTime DESC")
+    @Query("SELECT * FROM practice_record ORDER BY date_time DESC")
     fun getAll(): LiveData<List<PracticeRecord>>
 
     @Insert
-    fun insert(practiceRecord: PracticeRecord)
+    suspend fun insert(practiceRecord: PracticeRecord)
 
     @Update
-    fun update(practiceRecord: PracticeRecord)
+    suspend fun update(practiceRecord: PracticeRecord)
 
-    @Delete(entity = PracticeRecord::class)
-    fun deleteCoursePracticeRecords(courseId: String)
+    @Query("DELETE FROM practice_record WHERE course_id = :courseId")
+    suspend fun deleteCoursePracticeRecords(courseId: String)
 }

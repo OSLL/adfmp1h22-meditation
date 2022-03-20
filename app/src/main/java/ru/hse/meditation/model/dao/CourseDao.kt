@@ -13,16 +13,16 @@ interface CourseDao {
     fun getActive(): LiveData<Course>
 
     @Insert
-    fun insert(course: Course)
+    suspend fun insert(course: Course)
 
     @Update
-    fun update(course: Course)
+    suspend fun update(course: Course)
 
     @Delete
-    fun delete(course: Course)
+    suspend fun delete(course: Course)
 
     @Transaction
-    fun setActive(course: Course) {
+    suspend fun setActive(course: Course) {
         getActive().value?.let { currentActive ->
             currentActive.isActive = false
             update(currentActive)
