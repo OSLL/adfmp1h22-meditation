@@ -24,8 +24,8 @@ class CourseFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    private val dataTheory = (1..10).map { "Theory $it"}
-    private val dataPractice = (1..10).map { "Practice $it"}
+    private val dataTheory = (1..10).map { "Theory $it" }
+    private val dataPractice = (1..10).map { "Practice $it" }
 
 
     private fun justifyListViewHeightBasedOnChildren(listView: ListView) {

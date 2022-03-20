@@ -1,13 +1,16 @@
 package ru.hse.meditation.ui.history
 
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import ru.hse.meditation.model.entity.Course
+import ru.hse.meditation.model.entity.PracticeRecord
+import ru.hse.meditation.model.repository.CourseRepository
+import ru.hse.meditation.model.repository.PracticeRecordRepository
 
-class HistoryViewModel : ViewModel() {
+class HistoryViewModel(application: Application) : ViewModel() {
+    private val practiceRecordRepository = PracticeRecordRepository(application)
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is history Fragment"
-    }
-    val text: LiveData<String> = _text
+    val records: LiveData<List<PracticeRecord>> = practiceRecordRepository.getAll()
 }

@@ -36,7 +36,8 @@ abstract class MeditationDatabase : RoomDatabase() {
 
         private fun buildDatabase(context: Context) =
             Room.databaseBuilder(context.applicationContext,
-                MeditationDatabase::class.java, "meditation.db")
+                MeditationDatabase::class.java, "meditation_dev.db")
+                .createFromAsset("test.db")
                 .build()
     }
 }

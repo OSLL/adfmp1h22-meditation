@@ -3,6 +3,7 @@ package ru.hse.meditation.model.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import java.util.*
 
 @Entity(
@@ -11,7 +12,8 @@ import java.util.*
         entity = Course::class,
         parentColumns = ["id"],
         childColumns = ["course_id"]
-    )]
+    )],
+    indices = [Index("course_id", "level", "order")]
 )
 data class Practice(
     @ColumnInfo(name = "course_id")
