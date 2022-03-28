@@ -32,6 +32,12 @@
     <string name="start">Start</string>
     <string name="build_your_expertize">Build your expertize</string>
     <string name="practice">Practice</string>
+    <string name="minutes">%d minutes</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="calculating">calculating…</string>
+    <string name="enter_your_name">Enter Your Name</string>
+    <string name="course_level">Course level</string>
     <string name="about_message">
         Team:\n
         <ul>\n

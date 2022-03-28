@@ -1,4 +1,4 @@
-package ru.hse.meditation
+package ru.hse.meditation.ui
 
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -6,6 +6,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import ru.hse.meditation.R
 import ru.hse.meditation.databinding.ActivityMainBinding
 
 class MainActivity : ActivityWithOptionsMenu() {

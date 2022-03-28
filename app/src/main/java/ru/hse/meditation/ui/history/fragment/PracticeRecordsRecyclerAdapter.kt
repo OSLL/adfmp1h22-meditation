@@ -1,20 +1,25 @@
-package ru.hse.meditation
+package ru.hse.meditation.ui.history.fragment
 
+import android.annotation.SuppressLint
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import ru.hse.meditation.R
 import ru.hse.meditation.model.entity.PracticeRecord
+import ru.hse.meditation.ui.history.edit.EditPracticeRecordActivity
+import java.text.DateFormat
 
-class CustomRecyclerAdapter(
+class PracticeRecordsRecyclerAdapter(
     private val fragment: Fragment
-) : RecyclerView.Adapter<CustomRecyclerAdapter.MyViewHolder>() {
+) : RecyclerView.Adapter<PracticeRecordsRecyclerAdapter.MyViewHolder>() {
     private var data = emptyList<PracticeRecord>()
+    private val dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT)
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setData(newData: List<PracticeRecord>) {
         data = newData
         notifyDataSetChanged()
@@ -35,12 +40,13 @@ class CustomRecyclerAdapter(
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val record = data[position]
-        holder.textView.text = record.courseId
-        holder.dateTextView.text = record.dateTime.toString()
-        holder.timeTextView.text = "${record.duration}"
+        holder.textView.text = record.practiceName
+        val dateTime = dateFormat.format(record.dateTime)
+        holder.dateTextView.text = dateTime
+        holder.timeTextView.text = fragment.getString(R.string.minutes).format(record.duration)
         holder.itemView.setOnClickListener {
-            Log.d("TAG", position.toString())
-            val myIntent = Intent(fragment.activity, EditEntryActivity::class.java)
+            val myIntent = Intent(fragment.activity, EditPracticeRecordActivity::class.java)
+            myIntent.putExtra("record", record)
             fragment.startActivity(myIntent)
         }
     }

@@ -15,6 +15,9 @@ interface PracticeRecordDao {
     @Update
     suspend fun update(practiceRecord: PracticeRecord)
 
+    @Delete
+    suspend fun delete(practiceRecord: PracticeRecord)
+
     @Query("DELETE FROM practice_record WHERE course_id = :courseId")
     suspend fun deleteCoursePracticeRecords(courseId: String)
 }

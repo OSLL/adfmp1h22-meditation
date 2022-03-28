@@ -1,4 +1,4 @@
-package ru.hse.meditation.ui.history
+package ru.hse.meditation.ui.history.fragment
 
 import android.app.Application
 import androidx.lifecycle.LiveData

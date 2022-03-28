@@ -10,43 +10,39 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HSEMeditationApp">
         <activity
-            android:name=".AboutActivity"
+            android:name=".ui.about.AboutActivity"
             android:exported="false" />
         <activity
-            android:name=".AddCourseActivity"
+            android:name=".ui.course.add.AddCourseActivity"
             android:exported="false"
             android:label="@string/add_course" />
         <activity
-            android:name=".CreateCourseActivity"
+            android:name=".ui.course.create.CreateCourseActivity"
             android:exported="false"
             android:label="@string/create_course" />
         <activity
-            android:name=".ChangeCourseActivity"
+            android:name=".ui.course.change.ChangeCourseActivity"
             android:exported="false"
             android:label="@string/change_course" />
         <activity
-            android:name=".CourseInfoActivity"
+            android:name=".ui.course.info.CourseInfoActivity"
             android:exported="false"
             android:label="@string/course_info" />
         <activity
-            android:name=".MeditationActivity"
+            android:name=".ui.meditations.MeditationActivity"
             android:exported="false" />
         <activity
-            android:name=".MeditationInfoActivity"
+            android:name=".ui.meditations.MeditationInfoActivity"
             android:exported="false" />
         <activity
-            android:name=".TheoryActivity"
+            android:name=".ui.course.theory.TheoryActivity"
             android:exported="false" />
         <activity
-            android:name=".EditEntryActivity"
+            android:name=".ui.history.edit.EditPracticeRecordActivity"
             android:exported="false"
             android:label="@string/edit_entry" />
         <activity
-            android:name=".TestActivity"
-            android:exported="false"
-            android:label="@string/history" />
-        <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -15,10 +15,10 @@
         android:label="@string/meditations" />
     <fragment
         android:id="@+id/course"
-        android:name="ru.hse.meditation.ui.course.CourseFragment"
+        android:name="ru.hse.meditation.ui.course.fragment.CourseFragment"
         android:label="@string/course" />
     <fragment
         android:id="@+id/history"
-        android:name="ru.hse.meditation.ui.history.HistoryFragment"
+        android:name="ru.hse.meditation.ui.history.fragment.HistoryFragment"
         android:label="@string/history" />
 </navigation>

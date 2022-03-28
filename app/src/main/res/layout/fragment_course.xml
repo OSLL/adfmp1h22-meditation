@@ -5,47 +5,68 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".ui.course.CourseFragment">
+    tools:context=".ui.course.fragment.CourseFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dip"
-        >
+        android:layout_height="wrap_content">
+        <ProgressBar
+            android:id="@+id/progressBar2"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="invisible"/>
 
-
-        <TextView
-            android:id="@+id/header1"
+        <RelativeLayout
+            android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:text="@string/build_your_expertize" />
-
-        <ListView
-            android:id="@+id/theory_list"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/header1"
             android:orientation="vertical"
-            tools:ignore="NestedScrolling" />
+            android:padding="10dip"
+            >
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:contentDescription="@string/course_level"/>
+
+            <TextView
+                android:id="@+id/header1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_below="@+id/spinner"
+                android:text="@string/build_your_expertize" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/theory_list"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/header1"
+                android:orientation="vertical"
+                tools:ignore="NestedScrolling" />
 
 
-        <TextView
-            android:id="@+id/header2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/theory_list"
-            android:text="@string/practice" />
+            <TextView
+                android:id="@+id/header2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/theory_list"
+                android:text="@string/practice" />
 
-        <ListView
-            android:id="@+id/practice_list"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/header2"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            tools:ignore="NestedScrolling" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/practice_list"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/header2"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                tools:ignore="NestedScrolling" />
+        </RelativeLayout>
+
     </RelativeLayout>
 
 </ScrollView>

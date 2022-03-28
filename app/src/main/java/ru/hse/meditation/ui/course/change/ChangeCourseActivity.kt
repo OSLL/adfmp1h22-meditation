@@ -1,12 +1,15 @@
-package ru.hse.meditation
+package ru.hse.meditation.ui.course.change
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import ru.hse.meditation.R
+import ru.hse.meditation.ui.ActivityWithBackButton
+import ru.hse.meditation.ui.course.add.AddCourseActivity
 
-class ChangeCourseActivity : ActionWithBackButton() {
+class ChangeCourseActivity : ActivityWithBackButton() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_change_course)

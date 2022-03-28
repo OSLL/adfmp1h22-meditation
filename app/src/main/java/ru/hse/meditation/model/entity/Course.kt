@@ -5,7 +5,10 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(indices = [Index("id")])
+@Entity(
+    tableName = "course",
+    indices = [Index("id")]
+)
 data class Course(
     @PrimaryKey
     val id: String,

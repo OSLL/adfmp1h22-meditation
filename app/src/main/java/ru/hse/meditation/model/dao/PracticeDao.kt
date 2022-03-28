@@ -22,6 +22,12 @@ interface PracticeDao {
     """)
     suspend fun getLevelPractice(courseId: String, level: Int): List<Practice>
 
+    @Query("SELECT * FROM practice WHERE id = :id")
+    suspend fun getById(id: Int): Practice?
+
+    @Query("SELECT * FROM practice ORDER BY RANDOM() LIMIT 1")
+    suspend fun getRandom(): Practice
+
     @Insert
     suspend fun insert(entries: List<Practice>)
 

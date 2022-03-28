@@ -11,18 +11,12 @@ import ru.hse.meditation.databinding.FragmentMeditationsBinding
 
 class MeditationsFragment : Fragment() {
 
-    private var _binding: FragmentMeditationsBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMeditationsBinding.inflate(inflater, container, false)
+        val binding = FragmentMeditationsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         binding.viewPager.adapter = MeditationsTabAdapter(requireActivity())
@@ -35,10 +29,5 @@ class MeditationsFragment : Fragment() {
         }.attach()
 
         return root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }
