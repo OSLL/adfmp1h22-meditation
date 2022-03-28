@@ -5,37 +5,32 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.hse.meditation.databinding.FragmentMeditationsTabBinding
+import ru.hse.meditation.model.entity.Practice
+import ru.hse.meditation.ui.adapter.MeditationsAdapter
 
-class MeditationsTabFragment(private val list: List<String>) : Fragment() {
-
-    private var _binding: FragmentMeditationsTabBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
+class MeditationsTabFragment(private val list: LiveData<List<Practice>>) : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        _binding = FragmentMeditationsTabBinding.inflate(inflater, container, false)
+        val binding = FragmentMeditationsTabBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         binding.meditationsList.layoutManager = LinearLayoutManager(activity)
-        binding.meditationsList.adapter = MeditationsAdapter(
-            list.toMutableList(),
+        val adapter = MeditationsAdapter(
             this
         )
+        binding.meditationsList.adapter = adapter
+
+        list.observe(viewLifecycleOwner) {
+            adapter.setPracticeList(it)
+        }
 
         return root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

@@ -1,4 +1,4 @@
-package ru.hse.meditation
+package ru.hse.meditation.ui.course.add
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,9 +6,13 @@ import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ListView
+import ru.hse.meditation.ui.course.info.CourseInfoActivity
+import ru.hse.meditation.ui.course.create.CreateCourseActivity
+import ru.hse.meditation.R
+import ru.hse.meditation.ui.ActivityWithBackButton
 
 
-class AddCourseActivity : ActionWithBackButton() {
+class AddCourseActivity : ActivityWithBackButton() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_course)

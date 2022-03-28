@@ -23,6 +23,10 @@ class PracticeRepository(application: Application) {
     suspend fun getLevelPractice(courseId: String, level: Int): List<Practice> =
         practiceDao.getLevelPractice(courseId, level)
 
+    suspend fun getById(id: Int): Practice? = practiceDao.getById(id)
+
+    suspend fun getRandom(): Practice = practiceDao.getRandom()
+
     suspend fun insert(entries: List<Practice>) = practiceDao.insert(entries)
 
     suspend fun update(practice: Practice) = practiceDao.update(practice)

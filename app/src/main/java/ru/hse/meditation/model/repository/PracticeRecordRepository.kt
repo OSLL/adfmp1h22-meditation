@@ -20,6 +20,8 @@ class PracticeRecordRepository(application: Application) {
 
     suspend fun update(practiceRecord: PracticeRecord) = practiceRecordDao.update(practiceRecord)
 
+    suspend fun delete(practiceRecord: PracticeRecord) = practiceRecordDao.delete(practiceRecord)
+
     suspend fun deleteCoursePracticeRecords(courseId: String) =
         practiceRecordDao.deleteCoursePracticeRecords(courseId)
 }

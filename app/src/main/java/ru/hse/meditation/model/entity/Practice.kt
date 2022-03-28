@@ -1,19 +1,20 @@
 package ru.hse.meditation.model.entity
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.Index
+import androidx.room.*
+import java.io.Serializable
 import java.util.*
 
 @Entity(
-    primaryKeys = ["course_id", "level", "order"],
+    tableName = "practice",
     foreignKeys = [ForeignKey(
         entity = Course::class,
         parentColumns = ["id"],
         childColumns = ["course_id"]
     )],
-    indices = [Index("course_id", "level", "order")]
+    indices = [
+        Index("course_id", "level", "order", unique = true),
+        Index("course_id", "level")
+    ]
 )
 data class Practice(
     @ColumnInfo(name = "course_id")
@@ -28,5 +29,7 @@ data class Practice(
     @ColumnInfo(name = "last_practice_date_time")
     var lastPracticeDateTime: Date,
     @ColumnInfo(name = "is_favorite")
-    var isFavorite: Boolean
-)
+    var isFavorite: Boolean,
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0
+) : Serializable
