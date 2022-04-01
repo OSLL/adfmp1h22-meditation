@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,7 @@ import ru.hse.meditation.ui.meditations.MeditationInfoActivity
 class HomeFragment : Fragment() {
 
     private val viewModel: HomeViewModel by viewModels { factory() }
+    private var _binding: FragmentHomeBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,6 +30,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = binding
 
         binding.meditationOfTheDay.meditationName.visibility = View.INVISIBLE
         binding.meditationOfTheDay.progressBar.visibility = View.VISIBLE
@@ -61,6 +64,13 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        _binding?.let {
+            addMeditationOfTheDay(it)
+        }
+    }
+
     private fun saveUserName(binding: FragmentHomeBinding) {
         val preferences = requireActivity().getPreferences(Activity.MODE_PRIVATE)
         binding.userName.clearFocus()
@@ -92,5 +102,10 @@ class HomeFragment : Fragment() {
                 progressBar.visibility = View.INVISIBLE
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
