@@ -38,6 +38,7 @@
     <string name="calculating">calculating…</string>
     <string name="enter_your_name">Enter Your Name</string>
     <string name="course_level">Course level</string>
+    <string name="zero">0</string>
     <string name="about_message">
         Team:\n
         <ul>\n
