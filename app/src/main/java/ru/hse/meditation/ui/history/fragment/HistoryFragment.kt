@@ -23,9 +23,9 @@ class HistoryFragment : Fragment() {
         val binding = FragmentHistoryBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        viewModel.records.observe(viewLifecycleOwner, Observer {
+        viewModel.records.observe(viewLifecycleOwner) {
             adapter.setData(it)
-        })
+        }
 
         binding.historyList.layoutManager = LinearLayoutManager(activity)
         binding.historyList.adapter = adapter

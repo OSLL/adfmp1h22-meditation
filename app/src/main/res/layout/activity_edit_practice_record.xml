@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.history.edit.EditPracticeRecordActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/grey">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -126,13 +127,13 @@
         android:inputType="textMultiLine"
         android:gravity="top|start"
         android:hint="@string/write_comment"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
+        android:padding="16dp"
         android:textAlignment="viewStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-        android:autofillHints="" />
+        android:autofillHints=""
+        android:background="@color/white" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
