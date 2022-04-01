@@ -1,9 +1,10 @@
-package ru.hse.meditation.ui.meditations
+package ru.hse.meditation.ui.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import ru.hse.meditation.model.repository.PracticeRepository
+import ru.hse.meditation.ui.meditations.MeditationsTabFragment
 import java.lang.IllegalStateException
 
 class MeditationsTabAdapter(fragmentActivity: FragmentActivity) :

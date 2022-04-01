@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import ru.hse.meditation.R
 import ru.hse.meditation.databinding.FragmentMeditationsBinding
+import ru.hse.meditation.ui.adapter.MeditationsTabAdapter
 
 class MeditationsFragment : Fragment() {
 
