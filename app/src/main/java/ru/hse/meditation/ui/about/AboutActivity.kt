@@ -17,19 +17,5 @@ class AboutActivity : ActivityWithBackButton() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_about)
-        val repository = PracticeRecordRepository(application)
-        lifecycleScope.launch {
-            withContext(Dispatchers.IO) {
-                withContext(NonCancellable) {
-                    repository.insert(PracticeRecord(
-                        "course_id",
-                        "Blue Sky",
-                        Date(),
-                        3,
-                        "Danil comment"
-                    ))
-                }
-            }
-        }
     }
 }
