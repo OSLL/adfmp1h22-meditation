@@ -5,12 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.course.theory.TheoryActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/grey">
 
     <TextView
         android:id="@+id/meditation_description"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:paddingStart="16dp"
         android:paddingTop="16dp"

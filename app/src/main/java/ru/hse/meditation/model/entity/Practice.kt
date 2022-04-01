@@ -25,7 +25,7 @@ data class Practice(
     val audioName: String,
     val level: Int,
     val order: Int,
-    val duration: Int,
+    var duration: Int,
     @ColumnInfo(name = "last_practice_date_time")
     var lastPracticeDateTime: Date,
     @ColumnInfo(name = "is_favorite")

@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -34,24 +35,16 @@ class HomeFragment : Fragment() {
         binding.todayValue.text = viewModel.today
         binding.thisWeekValue.text = viewModel.thisWeek
 
-        binding.userName.onFocusChangeListener = object : View.OnFocusChangeListener {
-            override fun onFocusChange(v: View?, hasFocus: Boolean) {
-                if (hasFocus) {
-                    binding.button.visibility = View.VISIBLE
-                }
-            }
-        }
-
         addUserName(binding)
         addMeditationOfTheDay(binding)
 
-        binding.button.setOnClickListener {
-            val preferences = requireActivity().getPreferences(Activity.MODE_PRIVATE)
-            binding.userName.clearFocus()
-            viewModel.setUserName(binding.userName.text.toString(), preferences)
-            binding.button.visibility = View.INVISIBLE
-            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-            imm?.hideSoftInputFromWindow(view?.windowToken, 0)
+        binding.userName.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                saveUserName(binding)
+                true
+            } else {
+                false
+            }
         }
 
         viewModel.records.observe(viewLifecycleOwner) { records ->
@@ -66,6 +59,14 @@ class HomeFragment : Fragment() {
             }
         }
         return binding.root
+    }
+
+    private fun saveUserName(binding: FragmentHomeBinding) {
+        val preferences = requireActivity().getPreferences(Activity.MODE_PRIVATE)
+        binding.userName.clearFocus()
+        viewModel.setUserName(binding.userName.text.toString(), preferences)
+        val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        imm?.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
     private fun addUserName(binding: FragmentHomeBinding) {
