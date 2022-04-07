@@ -12,7 +12,7 @@ interface CourseDao {
     @Query("SELECT * FROM course WHERE is_active = 1")
     fun getActive(): LiveData<Course>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(course: Course)
 
     @Update
@@ -21,9 +21,12 @@ interface CourseDao {
     @Delete
     suspend fun delete(course: Course)
 
+    @Query("SELECT * FROM course WHERE is_active = 1")
+    suspend fun getActiveSync(): Course
+
     @Transaction
     suspend fun setActive(course: Course) {
-        getActive().value?.let { currentActive ->
+        getActiveSync().also { currentActive ->
             currentActive.isActive = false
             update(currentActive)
         }

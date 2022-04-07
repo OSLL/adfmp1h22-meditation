@@ -9,7 +9,7 @@ interface PracticeRecordDao {
     @Query("SELECT * FROM practice_record ORDER BY date_time DESC")
     fun getAll(): LiveData<List<PracticeRecord>>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(practiceRecord: PracticeRecord)
 
     @Update
