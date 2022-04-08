@@ -28,7 +28,7 @@ interface PracticeDao {
     @Query("SELECT * FROM practice ORDER BY RANDOM() LIMIT 1")
     suspend fun getRandom(): Practice
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(entries: List<Practice>)
 
     @Update
