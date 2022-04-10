@@ -23,7 +23,7 @@ class TheoryRepositoryTest : TestCase() {
     private val theoryRepository =
         TheoryRepository(appContext.applicationContext as Application)
 
-    private val courseId = "courseId"
+    private val courseId = "id"
     private val level = 1
     private val theory1 = Theory(
         courseId,
