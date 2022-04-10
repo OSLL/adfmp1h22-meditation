@@ -24,7 +24,7 @@ class PracticeRepositoryTest : TestCase() {
     private val practiceRepository =
         PracticeRepository(appContext.applicationContext as Application)
 
-    private val courseId = "courseId"
+    private val courseId = "id"
     private val practice1 = Practice(
         courseId,
         "practiceName1",
@@ -54,7 +54,6 @@ class PracticeRepositoryTest : TestCase() {
     private val courseRepository = CourseRepository(appContext.applicationContext as Application)
 
     private val course = Course(courseId, "name1", "description1", 1)
-//    private val course2 = Course("id", "name2", "description2", 2)
 
     @Before
     fun insertCourseBeforeTests() {
