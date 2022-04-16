@@ -11,7 +11,9 @@ import ru.hse.meditation.databinding.FragmentMeditationsTabBinding
 import ru.hse.meditation.model.entity.Practice
 import ru.hse.meditation.ui.adapter.MeditationsAdapter
 
-class MeditationsTabFragment(private val list: LiveData<List<Practice>>) : Fragment() {
+abstract class MeditationsTabFragment : Fragment() {
+
+    protected abstract fun getList(): LiveData<List<Practice>>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,7 +29,7 @@ class MeditationsTabFragment(private val list: LiveData<List<Practice>>) : Fragm
         )
         binding.meditationsList.adapter = adapter
 
-        list.observe(viewLifecycleOwner) {
+        getList().observe(viewLifecycleOwner) {
             adapter.setPracticeList(it)
         }
 

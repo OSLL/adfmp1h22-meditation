@@ -1,12 +1,15 @@
 package ru.hse.meditation.ui.meditations
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.CountDownTimer
 import ru.hse.meditation.databinding.ActivityMeditationBinding
 import ru.hse.meditation.model.entity.Practice
+import ru.hse.meditation.model.repository.MusicRepository
 import ru.hse.meditation.ui.ActivityWithBackButton
 
 class MeditationActivity : ActivityWithBackButton() {
+    private lateinit var mediaPlayer: MediaPlayer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,5 +35,16 @@ class MeditationActivity : ActivityWithBackButton() {
         }
         timer.start()
 
+        val musicRepository = MusicRepository(application)
+        mediaPlayer = MediaPlayer()
+        mediaPlayer.setDataSource(musicRepository.getMusicFileFor(practice.courseId, practice.audioName).absolutePath)
+        mediaPlayer.isLooping = true
+        mediaPlayer.prepare()
+        mediaPlayer.start()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mediaPlayer.stop()
     }
 }

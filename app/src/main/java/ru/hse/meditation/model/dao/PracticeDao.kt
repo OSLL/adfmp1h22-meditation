@@ -9,7 +9,7 @@ interface PracticeDao {
     @Query("SELECT * FROM practice ORDER BY name")
     fun getAll(): LiveData<List<Practice>>
 
-    @Query("SELECT * FROM practice ORDER BY last_practice_date_time DESC LIMIT 10")
+    @Query("SELECT * FROM practice WHERE last_practice_date_time <> 0 ORDER BY last_practice_date_time DESC LIMIT 10")
     fun getRecent(): LiveData<List<Practice>>
 
     @Query("SELECT * FROM practice WHERE is_favorite = 1 ORDER BY name")

@@ -3,14 +3,15 @@ package ru.hse.meditation.model.repository
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import org.json.JSONObject
-import org.kohsuke.github.GitHub
 import ru.hse.meditation.model.dao.CourseDao
 import ru.hse.meditation.model.database.MeditationDatabase
 import ru.hse.meditation.model.entity.Course
-import kotlin.concurrent.thread
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 class CourseRepository(application: Application) {
     private val courseDao: CourseDao
@@ -34,39 +35,23 @@ class CourseRepository(application: Application) {
 
     suspend fun setActive(course: Course) = courseDao.setActive(course)
 
-    suspend fun loadAllCourses(): List<Course> {
-        return suspendCoroutine { continuation ->
-            thread {
-                try {
-                    val gitHub = GitHub.connectAnonymously()
-                    val repo = gitHub.getRepository("KaperD/HSEMeditations")
-                    val dir = repo.getDirectoryContent("courses")
-
-                    val allCourses = mutableListOf<Course>()
-                    dir.forEach { courseDir ->
-                        if (courseDir.isDirectory) {
-                            val jsonString = courseDir.listDirectoryContent()
-                                .find { it.name == "course.json" }
-                                ?.read()
-                                ?.reader()
-                                ?.readText() ?: return@forEach
-                            val json = JSONObject(jsonString)
-
-                            allCourses.add(
-                                Course(
-                                    id = json.getString("id"),
-                                    name = json.getString("name"),
-                                    description = json.getString("description"),
-                                    numberOfLevels = json.getJSONArray("levels").length()
-                                )
-                            )
-                        }
-                    }
-                    continuation.resume(allCourses)
-                } catch (e: Exception) {
-                    Log.e("LESHA", e.message.toString())
-                }
-            }
+    suspend fun loadAllCourses(): List<Course> = withContext(Dispatchers.IO) {
+        val root = Firebase.storage.reference
+        Log.d("LESHA", "BEGIN")
+        val coursesDirs = root.child("courses").listAll().await().prefixes
+        Log.d("LESHA", "END")
+        coursesDirs.map {
+            Log.d("LESHA", "BEGIN1")
+            val fileStream = it.child("course.json").stream.await().stream
+            Log.d("LESHA", "END1")
+            val jsonString = fileStream.reader().readText()
+            val json = JSONObject(jsonString)
+            Course(
+                id = json.getString("id"),
+                name = json.getString("name"),
+                description = json.getString("description"),
+                numberOfLevels = json.getJSONArray("levels").length()
+            )
         }
     }
 }
