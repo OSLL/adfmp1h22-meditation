@@ -9,6 +9,9 @@ interface CourseDao {
     @Query("SELECT * FROM course ORDER BY name")
     fun getAll(): LiveData<List<Course>>
 
+    @Query("SELECT * FROM course ORDER BY name")
+    suspend fun getAllAwait(): List<Course>
+
     @Query("SELECT * FROM course WHERE is_active = 1")
     fun getActive(): LiveData<Course>
 
