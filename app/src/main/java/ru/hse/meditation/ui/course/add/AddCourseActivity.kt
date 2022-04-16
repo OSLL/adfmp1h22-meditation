@@ -29,9 +29,6 @@ class AddCourseActivity : ActivityWithBackButton() {
         adapter = AddCourseAdapter(this)
         binding.listOfNewCourses.adapter = adapter
 
-        binding.progressBarCoursesFromGithub.bringToFront()
-        binding.progressBarCoursesFromGithub.setOnClickListener {  }
-
         binding.newCourseButton.setOnClickListener {
             val intent = Intent(applicationContext, CreateCourseActivity::class.java)
             startActivity(intent)
@@ -43,7 +40,7 @@ class AddCourseActivity : ActivityWithBackButton() {
 
         lifecycleScope.launch {
             Log.d("LESHA", "Start")
-            binding.newCourseButton.visibility = View.INVISIBLE
+            binding.addActivityBody.visibility = View.INVISIBLE
             binding.progressBarCoursesFromGithub.visibility = View.VISIBLE
 
             val courseRepository = CourseRepository(application)
@@ -59,7 +56,7 @@ class AddCourseActivity : ActivityWithBackButton() {
 
             adapter.setCourseList(allCourses.toMutableList().apply { removeAll(currentCourses) })
             binding.progressBarCoursesFromGithub.visibility = View.INVISIBLE
-            binding.newCourseButton.visibility = View.VISIBLE
+            binding.addActivityBody.visibility = View.VISIBLE
             Log.d("LESHA", "Finish")
         }
     }

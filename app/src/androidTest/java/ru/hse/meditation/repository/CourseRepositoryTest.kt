@@ -54,7 +54,7 @@ class CourseRepositoryTest {
 
             assertEquals(2, courses.size)
             assertTrue(courses.contains(course2))
-            assertFalse(courses.contains(course1))
+            assertEquals(course2.name, courses[1].name)
         }
     }
 

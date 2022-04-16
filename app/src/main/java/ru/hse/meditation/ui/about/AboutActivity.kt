@@ -1,16 +1,8 @@
 package ru.hse.meditation.ui.about
 
 import android.os.Bundle
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.NonCancellable
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import ru.hse.meditation.ui.ActivityWithBackButton
 import ru.hse.meditation.R
-import ru.hse.meditation.model.entity.PracticeRecord
-import ru.hse.meditation.model.repository.PracticeRecordRepository
-import java.util.*
+import ru.hse.meditation.ui.ActivityWithBackButton
 
 class AboutActivity : ActivityWithBackButton() {
 
