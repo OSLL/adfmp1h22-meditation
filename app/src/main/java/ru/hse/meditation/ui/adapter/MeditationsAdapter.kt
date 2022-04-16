@@ -25,13 +25,13 @@ class MeditationsAdapter(
     }
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val textView: TextView = itemView.findViewById(R.id.meditation_name)
+        val textView: TextView = itemView.findViewById(R.id.item_name)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView =
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.meditation_item, parent, false)
+                .inflate(R.layout.recycle_view_item, parent, false)
         return MyViewHolder(itemView)
     }
 

@@ -2,11 +2,13 @@ package ru.hse.meditation.ui.course.change
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.ArrayAdapter
-import android.widget.ListView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ru.hse.meditation.R
+import ru.hse.meditation.model.repository.CourseRepository
 import ru.hse.meditation.ui.ActivityWithBackButton
+import ru.hse.meditation.ui.adapter.ChangeCourseAdapter
 import ru.hse.meditation.ui.course.add.AddCourseActivity
 
 class ChangeCourseActivity : ActivityWithBackButton() {
@@ -14,14 +16,18 @@ class ChangeCourseActivity : ActivityWithBackButton() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_change_course)
 
-        val listOfCourses: ListView = findViewById(R.id.list_of_courses)
-        val adapter = ArrayAdapter(
-            applicationContext,
-            android.R.layout.simple_list_item_1,
-            listOf("Course1", "Course2")
-        )
+        val listOfCourses: RecyclerView = findViewById(R.id.list_of_courses)
+        listOfCourses.layoutManager = LinearLayoutManager(applicationContext)
 
+        val adapter = ChangeCourseAdapter(this)
         listOfCourses.adapter = adapter
+
+        val courseRepository = CourseRepository(application)
+
+        val courses = courseRepository.getAll()
+        courses.observe(this) {
+            adapter.setCourseList(it)
+        }
 
         val fab: FloatingActionButton = findViewById(R.id.floating_action_button)
         fab.setOnClickListener {

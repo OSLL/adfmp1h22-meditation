@@ -32,7 +32,7 @@ class HomeFragment : Fragment() {
         val binding = FragmentHomeBinding.inflate(inflater, container, false)
         _binding = binding
 
-        binding.meditationOfTheDay.meditationName.visibility = View.INVISIBLE
+        binding.meditationOfTheDay.itemName.visibility = View.INVISIBLE
         binding.meditationOfTheDay.progressBar.visibility = View.VISIBLE
 
         binding.todayValue.text = viewModel.today
@@ -92,13 +92,13 @@ class HomeFragment : Fragment() {
             val preferences = requireActivity().getPreferences(Activity.MODE_PRIVATE)
             val practice = viewModel.getMeditationOfTheDay(preferences)
             with(binding.meditationOfTheDay) {
-                meditationName.text = practice.name
+                itemName.text = practice.name
                 root.setOnClickListener {
                     val myIntent = Intent(activity, MeditationInfoActivity::class.java)
                     myIntent.putExtra("practice", practice)
                     startActivity(myIntent)
                 }
-                meditationName.visibility = View.VISIBLE
+                itemName.visibility = View.VISIBLE
                 progressBar.visibility = View.INVISIBLE
             }
         }
