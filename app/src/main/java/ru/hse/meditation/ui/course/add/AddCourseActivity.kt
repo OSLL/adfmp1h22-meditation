@@ -2,51 +2,65 @@ package ru.hse.meditation.ui.course.add
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.ProgressBar
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.*
-import ru.hse.meditation.R
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import ru.hse.meditation.databinding.ActivityAddCourseBinding
 import ru.hse.meditation.model.repository.CourseRepository
 import ru.hse.meditation.ui.ActivityWithBackButton
 import ru.hse.meditation.ui.adapter.AddCourseAdapter
 import ru.hse.meditation.ui.course.create.CreateCourseActivity
 
 class AddCourseActivity : ActivityWithBackButton() {
+    private lateinit var binding: ActivityAddCourseBinding
+    private lateinit var adapter: AddCourseAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_course)
+        binding = ActivityAddCourseBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val listOfCourses: RecyclerView = findViewById(R.id.list_of_new_courses)
-        listOfCourses.layoutManager = LinearLayoutManager(applicationContext)
+        binding.listOfNewCourses.layoutManager = LinearLayoutManager(applicationContext)
 
-        val adapter = AddCourseAdapter(this)
-        listOfCourses.adapter = adapter
+        adapter = AddCourseAdapter(this)
+        binding.listOfNewCourses.adapter = adapter
 
-        val newCourseButton: Button = findViewById(R.id.new_course)
+        binding.progressBarCoursesFromGithub.bringToFront()
+        binding.progressBarCoursesFromGithub.setOnClickListener {  }
 
-        val progressBar: ProgressBar = findViewById(R.id.progressBarCoursesFromGithub)
-
-        lifecycleScope.launch {
-            newCourseButton.visibility = View.INVISIBLE
-            progressBar.visibility = View.VISIBLE
-
-            withContext(Dispatchers.IO) {
-                val courseRepository = CourseRepository(application)
-
-                val courses = courseRepository.loadNewCourses()
-                adapter.setCourseList(courses)
-            }
-            progressBar.visibility = View.INVISIBLE
-            newCourseButton.visibility = View.VISIBLE
-        }
-
-        newCourseButton.setOnClickListener {
+        binding.newCourseButton.setOnClickListener {
             val intent = Intent(applicationContext, CreateCourseActivity::class.java)
             startActivity(intent)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        lifecycleScope.launch {
+            Log.d("LESHA", "Start")
+            binding.newCourseButton.visibility = View.INVISIBLE
+            binding.progressBarCoursesFromGithub.visibility = View.VISIBLE
+
+            val courseRepository = CourseRepository(application)
+            val allCourses = withContext(Dispatchers.IO) {
+                courseRepository.loadAllCourses()
+            }
+            Log.d("LESHA", "Finish")
+
+            val currentCourses = withContext(Dispatchers.IO) {
+                courseRepository.getAllAwait()
+            }
+            Log.d("LESHA", "Finish")
+
+            adapter.setCourseList(allCourses.toMutableList().apply { removeAll(currentCourses) })
+            binding.progressBarCoursesFromGithub.visibility = View.INVISIBLE
+            binding.newCourseButton.visibility = View.VISIBLE
+            Log.d("LESHA", "Finish")
         }
     }
 }
