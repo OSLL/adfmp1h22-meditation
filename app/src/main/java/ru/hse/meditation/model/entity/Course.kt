@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 @Entity(
     tableName = "course",
@@ -22,4 +23,4 @@ data class Course(
     var isActive: Boolean = false,
     @ColumnInfo(name = "can_be_deleted")
     val canBeDeleted: Boolean = true
-)
+) : Serializable
