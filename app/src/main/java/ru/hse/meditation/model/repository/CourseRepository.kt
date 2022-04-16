@@ -26,5 +26,21 @@ class CourseRepository(application: Application) {
 
     suspend fun setActive(course: Course) = courseDao.setActive(course)
 
-    suspend fun loadNewCourses(): List<Course> = TODO("Load from Firebase")
+    suspend fun loadNewCourses(): List<Course> {
+//        TODO("Load from Firebase")
+        return listOf(
+            Course(
+                "id1",
+                "Lesha",
+                "",
+                1
+            ),
+            Course(
+                "id2",
+                "Lesha2",
+                "",
+                1
+            )
+        )
+    }
 }
