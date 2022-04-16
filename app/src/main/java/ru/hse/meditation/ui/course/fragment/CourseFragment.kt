@@ -77,4 +77,9 @@ class CourseFragment : Fragment() {
 
         return root
     }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.changeLevel(viewModel.currentCourse.currentLevel)
+    }
 }
