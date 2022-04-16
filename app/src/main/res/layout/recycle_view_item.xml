@@ -12,7 +12,7 @@
         android:background="?android:attr/selectableItemBackground">
 
         <TextView
-            android:id="@+id/meditation_name"
+            android:id="@+id/item_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"

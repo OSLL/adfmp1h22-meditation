@@ -1,25 +1,26 @@
 package ru.hse.meditation.ui.adapter
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import ru.hse.meditation.R
-import ru.hse.meditation.model.entity.Theory
-import ru.hse.meditation.ui.course.theory.TheoryActivity
+import ru.hse.meditation.model.entity.Course
+import ru.hse.meditation.ui.course.info.CourseInfoActivity
 
-class TheoryAdapter(
-    private val fragment: Fragment
-) : RecyclerView.Adapter<TheoryAdapter.MyViewHolder>() {
+class AddCourseAdapter(
+    private val activity: Activity
+) : RecyclerView.Adapter<AddCourseAdapter.MyViewHolder>() {
 
-    private var list: List<Theory> = emptyList()
+    private var list: List<Course> = emptyList()
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setTheoryList(list: List<Theory>) {
+    fun setCourseList(list: List<Course>) {
         this.list = list
         notifyDataSetChanged()
     }
@@ -36,12 +37,12 @@ class TheoryAdapter(
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val theory = list[position]
-        holder.textView.text = theory.name
+        val course = list[position]
+        holder.textView.text = course.name
         holder.itemView.setOnClickListener {
-            val myIntent = Intent(fragment.activity, TheoryActivity::class.java)
-            myIntent.putExtra("theory", theory)
-            fragment.startActivity(myIntent)
+            val myIntent = Intent(activity, CourseInfoActivity::class.java)
+            myIntent.putExtra("course", course)
+            activity.startActivity(myIntent)
         }
     }
 
