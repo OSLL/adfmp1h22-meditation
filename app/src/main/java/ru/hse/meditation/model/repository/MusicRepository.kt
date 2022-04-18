@@ -27,11 +27,13 @@ class MusicRepository(application: Application) {
             if (it.name == "course.json") {
                 return@forEach
             }
-            it.getFile(courseMusicDir.resolve(it.name).apply { createNewFile() }).addOnProgressListener {
-                progressBar.progress = (100 * (currentSize + it.bytesTransferred.toDouble()) / totalSize).roundToInt()
-            }.addOnSuccessListener {
-                currentSize += it.totalByteCount
-            }.await()
+            it.getFile(courseMusicDir.resolve(it.name).apply { createNewFile() })
+                .addOnProgressListener {
+                    progressBar.progress =
+                        (100 * (currentSize + it.bytesTransferred.toDouble()) / totalSize).roundToInt()
+                }.addOnSuccessListener {
+                    currentSize += it.totalByteCount
+                }.await()
         }
     }
 }

@@ -3,13 +3,10 @@ package ru.hse.meditation.model.repository
 import android.app.Application
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import ru.hse.meditation.model.dao.TheoryDao
 import ru.hse.meditation.model.database.MeditationDatabase
-import ru.hse.meditation.model.entity.Course
 import ru.hse.meditation.model.entity.Theory
 
 class TheoryRepository(application: Application) {

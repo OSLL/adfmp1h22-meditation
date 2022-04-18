@@ -2,7 +2,6 @@ package ru.hse.meditation.ui.course.add
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -39,7 +38,6 @@ class AddCourseActivity : ActivityWithBackButton() {
         super.onResume()
 
         lifecycleScope.launch {
-            Log.d("LESHA", "Start")
             binding.addActivityBody.visibility = View.INVISIBLE
             binding.progressBarCoursesFromGithub.visibility = View.VISIBLE
 
@@ -47,17 +45,14 @@ class AddCourseActivity : ActivityWithBackButton() {
             val allCourses = withContext(Dispatchers.IO) {
                 courseRepository.loadAllCourses()
             }
-            Log.d("LESHA", "Finish")
 
             val currentCourses = withContext(Dispatchers.IO) {
                 courseRepository.getAllAwait()
             }
-            Log.d("LESHA", "Finish")
 
             adapter.setCourseList(allCourses.toMutableList().apply { removeAll(currentCourses) })
             binding.progressBarCoursesFromGithub.visibility = View.INVISIBLE
             binding.addActivityBody.visibility = View.VISIBLE
-            Log.d("LESHA", "Finish")
         }
     }
 }
