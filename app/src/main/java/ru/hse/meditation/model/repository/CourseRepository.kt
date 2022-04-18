@@ -1,13 +1,10 @@
 package ru.hse.meditation.model.repository
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import ru.hse.meditation.model.dao.CourseDao
 import ru.hse.meditation.model.database.MeditationDatabase
@@ -35,15 +32,11 @@ class CourseRepository(application: Application) {
 
     suspend fun setActive(course: Course) = courseDao.setActive(course)
 
-    suspend fun loadAllCourses(): List<Course> = withContext(Dispatchers.IO) {
+    suspend fun loadAllCourses(): List<Course> {
         val root = Firebase.storage.reference
-        Log.d("LESHA", "BEGIN")
         val coursesDirs = root.child("courses").listAll().await().prefixes
-        Log.d("LESHA", "END")
-        coursesDirs.map {
-            Log.d("LESHA", "BEGIN1")
+        return coursesDirs.map {
             val fileStream = it.child("course.json").stream.await().stream
-            Log.d("LESHA", "END1")
             val jsonString = fileStream.reader().readText()
             val json = JSONObject(jsonString)
             Course(
