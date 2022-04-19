@@ -34,6 +34,7 @@ class MediaSessionService : Service() {
     private var lastAudioPath: String? = null
     private val handler: Handler = Handler(Looper.getMainLooper())
     private var practice: Practice? = null
+    private var timeLeft: Int? = null
 
     private val messageReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -64,28 +65,33 @@ class MediaSessionService : Service() {
         }
     }
 
+    private fun endPractice() {
+        practice?.let { practice ->
+            runBlocking {
+                PracticeRecordRepository(Application()).insert(
+                    PracticeRecord(
+                        practice.courseId,
+                        practice.name,
+                        Date(),
+                        mediaPlayer!!.duration / 60000,
+                        ""
+                    )
+                )
+                mediaPlayer!!.reset()
+                mMediaNotificationManager!!.notificationManager.cancelAll()
+                stopForeground(true)
+                stopSelf()
+            }
+        }
+    }
+
     override fun onCreate() {
         super.onCreate()
         mediaPlayer = MediaPlayer()
-        mediaPlayer!!.setOnCompletionListener {
-            mediaPlayer!!.setOnCompletionListener { mediaPlayer ->
-                practice?.let { practice ->
-                    runBlocking {
-                        PracticeRecordRepository(Application()).insert(
-                            PracticeRecord(
-                                practice.courseId,
-                                practice.name,
-                                Date(),
-                                mediaPlayer.duration / 60000,
-                                ""
-                            )
-                        )
-                        mediaPlayer.reset()
-                        mMediaNotificationManager!!.notificationManager.cancelAll()
-                        stopForeground(true)
-                        stopSelf()
-                    }
-                }
+        mediaPlayer!!.setOnCompletionListener { mediaPlayer ->
+            timeLeft = timeLeft!! - mediaPlayer.duration
+            if (timeLeft!! < 0) {
+                endPractice()
             }
         }
         val broadcastManager = LocalBroadcastManager.getInstance(this)
@@ -158,6 +164,7 @@ class MediaSessionService : Service() {
             }
         } else {
             practice = (intent.getSerializableExtra("practice") as Practice)
+            timeLeft = practice!!.duration * 60000
             val path = MusicRepository(application).getMusicFileFor(
                 practice!!.courseId,
                 practice!!.audioName
@@ -181,7 +188,7 @@ class MediaSessionService : Service() {
                                 })
                                 mediaPlayer.apply {
                                     setDataSource(path)
-                                    isLooping = false
+                                    isLooping = true
                                     prepare()
                                     start()
                                 }
@@ -213,6 +220,9 @@ class MediaSessionService : Service() {
             LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(audioIntent).also {
                 it.putExtra("time", time)
             })
+            if (timeLeft!! < currentDuration) {
+                endPractice()
+            }
 
             updateSeekBar()
         }
