@@ -1,5 +1,6 @@
 package ru.hse.meditation.ui.notifications
 
+import android.app.Application
 import android.app.Service
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -13,13 +14,16 @@ import android.os.SystemClock
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
-import android.util.Log
 import android.view.KeyEvent
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.media.session.MediaButtonReceiver
+import kotlinx.coroutines.runBlocking
 import ru.hse.meditation.model.entity.Practice
+import ru.hse.meditation.model.entity.PracticeRecord
 import ru.hse.meditation.model.repository.MusicRepository
+import ru.hse.meditation.model.repository.PracticeRecordRepository
 import ru.hse.meditation.ui.meditations.audioIntent
+import java.util.*
 
 const val audioIntentForService = "audioIntentForService"
 
@@ -29,6 +33,7 @@ class MediaSessionService : Service() {
     private var mediaSession: MediaSessionCompat? = null
     private var lastAudioPath: String? = null
     private val handler: Handler = Handler(Looper.getMainLooper())
+    private var practice: Practice? = null
 
     private val messageReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -62,6 +67,27 @@ class MediaSessionService : Service() {
     override fun onCreate() {
         super.onCreate()
         mediaPlayer = MediaPlayer()
+        mediaPlayer!!.setOnCompletionListener {
+            mediaPlayer!!.setOnCompletionListener { mediaPlayer ->
+                practice?.let { practice ->
+                    runBlocking {
+                        PracticeRecordRepository(Application()).insert(
+                            PracticeRecord(
+                                practice.courseId,
+                                practice.name,
+                                Date(),
+                                mediaPlayer.duration / 60000,
+                                ""
+                            )
+                        )
+                        mediaPlayer.reset()
+                        mMediaNotificationManager!!.notificationManager.cancelAll()
+                        stopForeground(true)
+                        stopSelf()
+                    }
+                }
+            }
+        }
         val broadcastManager = LocalBroadcastManager.getInstance(this)
         broadcastManager.registerReceiver(messageReceiver, IntentFilter(audioIntentForService))
     }
@@ -107,8 +133,6 @@ class MediaSessionService : Service() {
                         builder.clearActions()
                         if (keyEvent!!.keyCode == KeyEvent.KEYCODE_MEDIA_PAUSE) {
                             mediaPlayer.pause()
-                            Log.e("switch onstart", "pause")
-
                             broadcastManager.sendBroadcast(Intent(audioIntent).also {
                                 it.putExtra("switch", "pause")
                             })
@@ -133,10 +157,10 @@ class MediaSessionService : Service() {
                 }
             }
         } else {
-            val practice = intent.getSerializableExtra("practice") as Practice
+            practice = (intent.getSerializableExtra("practice") as Practice)
             val path = MusicRepository(application).getMusicFileFor(
-                practice.courseId,
-                practice.audioName
+                practice!!.courseId,
+                practice!!.audioName
             ).absolutePath
 
             if ((mediaPlayer?.isPlaying != true) || path != lastAudioPath) {
@@ -144,7 +168,7 @@ class MediaSessionService : Service() {
                 mediaPlayer?.also { mediaPlayer ->
                     mediaPlayer.reset()
                     mMediaNotificationManager =
-                        MediaNotificationManager(this, practice).also { manager ->
+                        MediaNotificationManager(this, practice!!).also { manager ->
                             mediaSession = MediaSessionCompat(this, "MediaSessionCompat").apply {
                                 setCallback(object : MediaSessionCompat.Callback() {
                                     override fun onPlay() {
