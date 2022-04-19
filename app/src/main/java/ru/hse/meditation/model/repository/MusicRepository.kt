@@ -9,12 +9,22 @@ import java.io.File
 import kotlin.math.roundToInt
 
 class MusicRepository(application: Application) {
+    private val assets = application.assets
     private val musicDir = application.filesDir.resolve("music").apply {
         mkdir()
     }
 
     fun getMusicFileFor(courseId: String, musicFileName: String): File {
-        return musicDir.resolve("$courseId/$musicFileName")
+        val courseMusicDir = musicDir.resolve(courseId).apply { mkdir() }
+        return courseMusicDir.resolve(musicFileName).also {
+            if (!it.exists()) {
+                assets.open(musicFileName).use { input ->
+                    it.outputStream().use { output ->
+                        input.copyTo(output, 1024)
+                    }
+                }
+            }
+        }
     }
 
     suspend fun loadMusicForCourse(courseId: String, progressBar: ProgressBar) {
