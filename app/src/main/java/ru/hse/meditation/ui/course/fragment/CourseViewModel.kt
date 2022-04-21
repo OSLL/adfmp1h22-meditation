@@ -1,12 +1,8 @@
 package ru.hse.meditation.ui.course.fragment
 
 import android.app.Application
-import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.hse.meditation.model.entity.Course
 import ru.hse.meditation.model.entity.Practice
@@ -20,15 +16,16 @@ class CourseViewModel(application: Application) : ViewModel() {
     private val practiceRepository = PracticeRepository(application)
     private val theoryRepository = TheoryRepository(application)
 
-    lateinit var currentCourse: Course
+    private lateinit var currentCourse: Course
 
-    val currentCourseLiveData: LiveData<Course> = courseRepository.getActive()
-
-    fun changeLevel(newLevel: Int) {
+    suspend fun changeLevel(newLevel: Int) = withContext(Dispatchers.IO) {
         currentCourse.currentLevel = newLevel
-        viewModelScope.launch(Dispatchers.IO) {
-            courseRepository.update(currentCourse)
-        }
+        courseRepository.update(currentCourse)
+    }
+
+    suspend fun currentCourse(): Course = withContext(Dispatchers.IO) {
+        currentCourse = courseRepository.getActive()
+        currentCourse
     }
 
     suspend fun currentTheory(course: Course): List<Theory> = withContext(Dispatchers.IO) {

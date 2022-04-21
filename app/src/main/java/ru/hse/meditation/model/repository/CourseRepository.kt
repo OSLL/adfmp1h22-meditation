@@ -22,7 +22,7 @@ class CourseRepository(application: Application) {
 
     suspend fun getAllAwait(): List<Course> = courseDao.getAllAwait()
 
-    fun getActive(): LiveData<Course> = courseDao.getActive()
+    suspend fun getActive(): Course = courseDao.getActive()
 
     suspend fun insert(course: Course) = courseDao.insert(course)
 

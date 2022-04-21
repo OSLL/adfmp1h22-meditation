@@ -19,7 +19,10 @@ import ru.hse.meditation.ui.factory
 
 
 class CourseFragment : Fragment() {
-
+    private lateinit var binding: FragmentCourseBinding
+    private lateinit var adapter: ArrayAdapter<String>
+    private lateinit var theoryAdapter: TheoryAdapter
+    private lateinit var practiceAdapter: MeditationsAdapter
     private val viewModel: CourseViewModel by viewModels { factory() }
 
     override fun onCreateView(
@@ -27,18 +30,18 @@ class CourseFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentCourseBinding.inflate(inflater, container, false)
+        binding = FragmentCourseBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         binding.theoryList.layoutManager = LinearLayoutManager(activity)
-        val theoryAdapter = TheoryAdapter(this)
+        theoryAdapter = TheoryAdapter(this)
         binding.theoryList.adapter = theoryAdapter
 
         binding.practiceList.layoutManager = LinearLayoutManager(activity)
-        val practiceAdapter = MeditationsAdapter(this)
+        practiceAdapter = MeditationsAdapter(this)
         binding.practiceList.adapter = practiceAdapter
 
-        val adapter = ArrayAdapter<String>(
+        adapter = ArrayAdapter<String>(
             requireContext(),
             android.R.layout.simple_spinner_item,
             mutableListOf()
@@ -52,7 +55,10 @@ class CourseFragment : Fragment() {
                 position: Int,
                 id: Long
             ) {
-                viewModel.changeLevel(position + 1)
+                lifecycleScope.launch {
+                    viewModel.changeLevel(position + 1)
+                    updateCourse()
+                }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -60,26 +66,27 @@ class CourseFragment : Fragment() {
 
         }
 
-        viewModel.currentCourseLiveData.observe(viewLifecycleOwner) { course ->
-            lifecycleScope.launch {
-                binding.progressBar2.visibility = View.VISIBLE
-                binding.content.visibility = View.INVISIBLE
-                adapter.clear()
-                adapter.addAll((1..course.numberOfLevels).map { "Level $it" })
-                adapter.notifyDataSetChanged()
-                viewModel.currentCourse = course
-                theoryAdapter.setTheoryList(viewModel.currentTheory(course))
-                practiceAdapter.setPracticeList(viewModel.currentPractice(course))
-                binding.progressBar2.visibility = View.INVISIBLE
-                binding.content.visibility = View.VISIBLE
-            }
-        }
-
         return root
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.changeLevel(viewModel.currentCourse.currentLevel)
+        lifecycleScope.launch {
+            updateCourse()
+        }
+    }
+
+    private suspend fun updateCourse() {
+        val course = viewModel.currentCourse()
+        binding.progressBar2.visibility = View.VISIBLE
+        binding.content.visibility = View.INVISIBLE
+        adapter.clear()
+        adapter.addAll((1..course.numberOfLevels).map { "Level $it" })
+        adapter.notifyDataSetChanged()
+        binding.spinner.setSelection(course.currentLevel - 1)
+        theoryAdapter.setTheoryList(viewModel.currentTheory(course))
+        practiceAdapter.setPracticeList(viewModel.currentPractice(course))
+        binding.progressBar2.visibility = View.INVISIBLE
+        binding.content.visibility = View.VISIBLE
     }
 }
