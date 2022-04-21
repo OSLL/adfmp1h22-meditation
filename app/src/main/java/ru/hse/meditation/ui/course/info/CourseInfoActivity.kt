@@ -28,8 +28,7 @@ class CourseInfoActivity : ActivityWithBackButton() {
 
         val course = intent.getSerializableExtra("course") as Course
 
-        binding.infoAboutCourse.text =
-            "Description course \"${course.name}\": ${course.description}"
+        binding.infoAboutCourse.text = course.description
 
         binding.downloadCourseButton.setOnClickListener {
             lifecycleScope.launch {
