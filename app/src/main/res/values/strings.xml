@@ -56,4 +56,6 @@
     <string name="play">play</string>
     <string name="pause">pause</string>
     <string name="stop">stop</string>
+    <string name="you_have_completed">You have completed %s meditation!</string>
+    <string name="new_course_instruction">Make Pull Request to https://github.com/KaperD/HSEMeditations repository with your course in json + music files format\nYou can see example in courses/example_course/ folder\nYour course should be placed in courses/your_course_id folder</string>
 </resources>
