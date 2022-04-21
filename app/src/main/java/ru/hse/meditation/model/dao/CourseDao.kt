@@ -13,7 +13,7 @@ interface CourseDao {
     suspend fun getAllAwait(): List<Course>
 
     @Query("SELECT * FROM course WHERE is_active = 1")
-    fun getActive(): LiveData<Course>
+    suspend fun getActive(): Course
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(course: Course)
