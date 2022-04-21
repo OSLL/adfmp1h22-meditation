@@ -93,7 +93,7 @@ class MediaSessionService : Service() {
                 stopSelf()
 
                 LocalBroadcastManager.getInstance(this@MediaSessionService).sendBroadcast(Intent(audioIntent).also {
-                    it.putExtra("switch", "stop")
+                    it.putExtra("switch", "finish")
                 })
             }
         }

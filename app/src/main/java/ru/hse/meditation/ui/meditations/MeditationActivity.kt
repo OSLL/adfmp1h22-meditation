@@ -7,6 +7,7 @@ import android.content.IntentFilter
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import ru.hse.meditation.R
@@ -20,13 +21,14 @@ const val audioIntent = "AudioIntent"
 
 class MeditationActivity : ActivityWithBackButton() {
     lateinit var binding: ActivityMeditationBinding
+    private lateinit var practice: Practice
     private var lastTime = ""
     private var isStopped = false
 
     override fun onResume() {
         super.onResume()
         if (isStopped) {
-            onBackPressed()
+            finishMeditation()
         }
 
         binding.timer.text = lastTime
@@ -80,6 +82,10 @@ class MeditationActivity : ActivityWithBackButton() {
                             isStopped = true
                             onBackPressed()
                         }
+                        "finish" -> {
+                            isStopped = true
+                            finishMeditation()
+                        }
                     }
                 }
             }
@@ -96,7 +102,7 @@ class MeditationActivity : ActivityWithBackButton() {
         binding = ActivityMeditationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val practice = intent.getSerializableExtra("practice") as Practice
+        practice = intent.getSerializableExtra("practice") as Practice
         title = practice.name
 
         val serviceOn = intent.getBooleanExtra("serviceOn", false)
@@ -109,6 +115,15 @@ class MeditationActivity : ActivityWithBackButton() {
             applicationContext,
             intent
         )
+    }
+
+    private fun finishMeditation() {
+        Toast.makeText(
+            applicationContext,
+            getString(R.string.you_have_completed).format(practice.name),
+            Toast.LENGTH_SHORT
+        ).show()
+        onBackPressed()
     }
 
 }

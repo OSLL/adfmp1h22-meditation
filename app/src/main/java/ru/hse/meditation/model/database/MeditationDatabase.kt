@@ -17,7 +17,7 @@ import ru.hse.meditation.model.entity.Theory
 
 @Database(
     entities = [Course::class, Theory::class, Practice::class, PracticeRecord::class],
-    version = 3,
+    version = 1,
     exportSchema = false
 )
 @TypeConverters(DateConverter::class)
@@ -37,8 +37,7 @@ abstract class MeditationDatabase : RoomDatabase() {
 
         private fun buildDatabase(context: Context) =
             Room.databaseBuilder(context.applicationContext,
-                MeditationDatabase::class.java, "meditation_dev.db")
-                .fallbackToDestructiveMigration()
+                MeditationDatabase::class.java, "meditation_release.db")
                 .createFromAsset("test.db")
                 .build()
     }
