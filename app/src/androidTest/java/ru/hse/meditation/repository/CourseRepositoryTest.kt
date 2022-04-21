@@ -64,7 +64,7 @@ class CourseRepositoryTest {
             courseRepository.insert(course1)
             courseRepository.setActive(course1)
 
-            val activeCourse = courseRepository.getActive().awaitValue()
+            val activeCourse = courseRepository.getActive()
 
             assertEquals(course1, activeCourse)
         }

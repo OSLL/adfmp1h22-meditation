@@ -20,9 +20,16 @@ const val audioIntent = "AudioIntent"
 
 class MeditationActivity : ActivityWithBackButton() {
     lateinit var binding: ActivityMeditationBinding
+    private var lastTime = ""
+    private var isStopped = false
 
     override fun onResume() {
         super.onResume()
+        if (isStopped) {
+            onBackPressed()
+        }
+
+        binding.timer.text = lastTime
 
         val playButton: ImageButton = findViewById(R.id.play)
         val pauseButton: ImageButton = findViewById(R.id.pause)
@@ -56,6 +63,7 @@ class MeditationActivity : ActivityWithBackButton() {
                 val pauseButton: ImageButton = findViewById(R.id.pause)
 
                 intent.getStringExtra("time")?.let { time ->
+                    lastTime = time
                     binding.timer.text = time
                 }
                 intent.getStringExtra("switch")?.let { switch ->
@@ -69,6 +77,7 @@ class MeditationActivity : ActivityWithBackButton() {
                             pauseButton.visibility = View.GONE
                         }
                         "stop" -> {
+                            isStopped = true
                             onBackPressed()
                         }
                     }
@@ -77,9 +86,9 @@ class MeditationActivity : ActivityWithBackButton() {
         }
     }
 
-    override fun onPause() {
+    override fun onDestroy() {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(messageReceiver)
-        super.onPause()
+        super.onDestroy()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
