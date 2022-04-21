@@ -14,6 +14,7 @@ import android.os.SystemClock
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
+import android.util.Log
 import android.view.KeyEvent
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.media.session.MediaButtonReceiver
@@ -22,6 +23,7 @@ import ru.hse.meditation.model.entity.Practice
 import ru.hse.meditation.model.entity.PracticeRecord
 import ru.hse.meditation.model.repository.MusicRepository
 import ru.hse.meditation.model.repository.PracticeRecordRepository
+import ru.hse.meditation.model.repository.PracticeRepository
 import ru.hse.meditation.ui.meditations.audioIntent
 import java.util.*
 
@@ -55,9 +57,13 @@ class MediaSessionService : Service() {
                         }
                         "stop" -> {
                             mediaPlayer?.reset()
-                            mMediaNotificationManager!!.notificationManager.cancelAll()
+                            mMediaNotificationManager?.notificationManager?.cancelAll()
                             stopForeground(true)
                             stopSelf()
+
+                            LocalBroadcastManager.getInstance(this@MediaSessionService).sendBroadcast(Intent(audioIntent).also {
+                                it.putExtra("switch", "stop")
+                            })
                         }
                     }
                 }
@@ -68,19 +74,27 @@ class MediaSessionService : Service() {
     private fun endPractice() {
         practice?.let { practice ->
             runBlocking {
+                val date = Date()
                 PracticeRecordRepository(Application()).insert(
                     PracticeRecord(
                         practice.courseId,
                         practice.name,
-                        Date(),
-                        mediaPlayer!!.duration / 60000,
+                        date,
+                        practice.duration,
                         ""
                     )
                 )
+                practice.lastPracticeDateTime = date
+                PracticeRepository(Application()).update(practice)
+
                 mediaPlayer!!.reset()
                 mMediaNotificationManager!!.notificationManager.cancelAll()
                 stopForeground(true)
                 stopSelf()
+
+                LocalBroadcastManager.getInstance(this@MediaSessionService).sendBroadcast(Intent(audioIntent).also {
+                    it.putExtra("switch", "stop")
+                })
             }
         }
     }
@@ -90,6 +104,8 @@ class MediaSessionService : Service() {
         mediaPlayer = MediaPlayer()
         mediaPlayer!!.setOnCompletionListener { mediaPlayer ->
             timeLeft = timeLeft!! - mediaPlayer.duration
+            Log.e("TimeLeft", "$timeLeft out of ${practice!!.duration * 60000}")
+
             if (timeLeft!! < 0) {
                 endPractice()
             }
@@ -165,6 +181,7 @@ class MediaSessionService : Service() {
         } else {
             practice = (intent.getSerializableExtra("practice") as Practice)
             timeLeft = practice!!.duration * 60000
+            Log.e("TimeLeft", "$timeLeft out of ${practice!!.duration * 60000}")
             val path = MusicRepository(application).getMusicFileFor(
                 practice!!.courseId,
                 practice!!.audioName

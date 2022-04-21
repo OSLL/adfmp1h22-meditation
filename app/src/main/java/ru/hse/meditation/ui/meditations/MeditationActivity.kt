@@ -5,9 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Button
+import android.widget.ImageButton
 import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import ru.hse.meditation.R
@@ -25,9 +24,9 @@ class MeditationActivity : ActivityWithBackButton() {
     override fun onResume() {
         super.onResume()
 
-        val playButton: Button = findViewById(R.id.play)
-        val pauseButton: Button = findViewById(R.id.pause)
-        val stopButton: Button = findViewById(R.id.stop)
+        val playButton: ImageButton = findViewById(R.id.play)
+        val pauseButton: ImageButton = findViewById(R.id.pause)
+        val stopButton: ImageButton = findViewById(R.id.stop)
 
         val broadcastManager = LocalBroadcastManager.getInstance(this)
         playButton.setOnClickListener {
@@ -37,7 +36,6 @@ class MeditationActivity : ActivityWithBackButton() {
         }
         pauseButton.setOnClickListener {
             broadcastManager.sendBroadcast(Intent(audioIntentForService).also {
-                Log.e("switch Activity", "pause")
                 it.putExtra("switch", "pause")
             })
         }
@@ -46,7 +44,6 @@ class MeditationActivity : ActivityWithBackButton() {
             broadcastManager.sendBroadcast(Intent(audioIntentForService).also {
                 it.putExtra("switch", "stop")
             })
-            onBackPressed()
         }
 
         broadcastManager.registerReceiver(messageReceiver, IntentFilter(audioIntent))
@@ -55,8 +52,8 @@ class MeditationActivity : ActivityWithBackButton() {
     private val messageReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             if (intent.action == audioIntent) {
-                val playButton: Button = findViewById(R.id.play)
-                val pauseButton: Button = findViewById(R.id.pause)
+                val playButton: ImageButton = findViewById(R.id.play)
+                val pauseButton: ImageButton = findViewById(R.id.pause)
 
                 intent.getStringExtra("time")?.let { time ->
                     binding.timer.text = time
@@ -67,9 +64,12 @@ class MeditationActivity : ActivityWithBackButton() {
                             playButton.visibility = View.GONE
                             pauseButton.visibility = View.VISIBLE
                         }
-                        else -> {
+                        "pause" -> {
                             playButton.visibility = View.VISIBLE
                             pauseButton.visibility = View.GONE
+                        }
+                        "stop" -> {
+                            onBackPressed()
                         }
                     }
                 }
