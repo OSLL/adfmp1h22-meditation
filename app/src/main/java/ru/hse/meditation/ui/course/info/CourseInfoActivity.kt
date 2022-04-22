@@ -46,7 +46,11 @@ class CourseInfoActivity : ActivityWithBackButton() {
                             theoryRepository.insert(theoryRepository.loadTheoriesForCourse(course.id))
 
                             val practiceRepository = PracticeRepository(application)
-                            practiceRepository.insert(practiceRepository.loadPracticesForCourse(course.id))
+                            practiceRepository.insert(
+                                practiceRepository.loadPracticesForCourse(
+                                    course.id
+                                )
+                            )
 
                             val musicRepository = MusicRepository(application)
                             musicRepository.loadMusicForCourse(
@@ -57,12 +61,21 @@ class CourseInfoActivity : ActivityWithBackButton() {
                             Log.w("MEDITATION", e)
 
                             Handler(Looper.getMainLooper()).post {
-                                Toast.makeText(application.applicationContext, e.message, Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    application.applicationContext,
+                                    e.message,
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                             throw e
                         }
                     }
                 }
+                Toast.makeText(
+                    applicationContext,
+                    "Course has been added",
+                    Toast.LENGTH_SHORT
+                ).show()
                 onBackPressed()
             }
         }
