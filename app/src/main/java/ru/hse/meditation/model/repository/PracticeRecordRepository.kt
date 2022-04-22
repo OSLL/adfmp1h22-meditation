@@ -16,7 +16,7 @@ class PracticeRecordRepository(application: Application) {
 
     fun getAll(): LiveData<List<PracticeRecord>> = practiceRecordDao.getAll()
 
-    suspend fun insert(practiceRecord: PracticeRecord) = practiceRecordDao.insert(practiceRecord)
+    suspend fun insert(practiceRecord: PracticeRecord): Long = practiceRecordDao.insert(practiceRecord)
 
     suspend fun update(practiceRecord: PracticeRecord) = practiceRecordDao.update(practiceRecord)
 

@@ -118,11 +118,6 @@ class MeditationActivity : ActivityWithBackButton() {
     }
 
     private fun finishMeditation() {
-        Toast.makeText(
-            applicationContext,
-            getString(R.string.you_have_completed).format(practice.name),
-            Toast.LENGTH_SHORT
-        ).show()
         onBackPressed()
     }
 
