@@ -10,7 +10,7 @@ interface PracticeRecordDao {
     fun getAll(): LiveData<List<PracticeRecord>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(practiceRecord: PracticeRecord)
+    suspend fun insert(practiceRecord: PracticeRecord): Long
 
     @Update
     suspend fun update(practiceRecord: PracticeRecord)

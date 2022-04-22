@@ -1,7 +1,6 @@
 package ru.hse.meditation.ui.notifications
 
-import android.app.Application
-import android.app.Service
+import android.app.*
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -14,18 +13,21 @@ import android.os.SystemClock
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
-import android.util.Log
 import android.view.KeyEvent
+import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.media.session.MediaButtonReceiver
 import kotlinx.coroutines.runBlocking
+import ru.hse.meditation.R
 import ru.hse.meditation.model.entity.Practice
 import ru.hse.meditation.model.entity.PracticeRecord
 import ru.hse.meditation.model.repository.MusicRepository
 import ru.hse.meditation.model.repository.PracticeRecordRepository
 import ru.hse.meditation.model.repository.PracticeRepository
+import ru.hse.meditation.ui.history.edit.EditPracticeRecordActivity
 import ru.hse.meditation.ui.meditations.audioIntent
 import java.util.*
+
 
 const val audioIntentForService = "audioIntentForService"
 
@@ -61,9 +63,10 @@ class MediaSessionService : Service() {
                             stopForeground(true)
                             stopSelf()
 
-                            LocalBroadcastManager.getInstance(this@MediaSessionService).sendBroadcast(Intent(audioIntent).also {
-                                it.putExtra("switch", "stop")
-                            })
+                            LocalBroadcastManager.getInstance(this@MediaSessionService)
+                                .sendBroadcast(Intent(audioIntent).also {
+                                    it.putExtra("switch", "stop")
+                                })
                         }
                     }
                 }
@@ -75,15 +78,17 @@ class MediaSessionService : Service() {
         practice?.let { practice ->
             runBlocking {
                 val date = Date()
-                PracticeRecordRepository(Application()).insert(
-                    PracticeRecord(
-                        practice.courseId,
-                        practice.name,
-                        date,
-                        practice.duration,
-                        ""
-                    )
+                val record = PracticeRecord(
+                    practice.courseId,
+                    practice.name,
+                    date,
+                    practice.duration,
+                    ""
                 )
+                val id = PracticeRecordRepository(Application()).insert(
+                    record
+                ).toInt()
+
                 practice.lastPracticeDateTime = date
                 PracticeRepository(Application()).update(practice)
 
@@ -92,9 +97,12 @@ class MediaSessionService : Service() {
                 stopForeground(true)
                 stopSelf()
 
-                LocalBroadcastManager.getInstance(this@MediaSessionService).sendBroadcast(Intent(audioIntent).also {
-                    it.putExtra("switch", "finish")
-                })
+                sendFinishNotification(record.copy(id = id))
+
+                LocalBroadcastManager.getInstance(this@MediaSessionService)
+                    .sendBroadcast(Intent(audioIntent).also {
+                        it.putExtra("switch", "finish")
+                    })
             }
         }
     }
@@ -104,7 +112,6 @@ class MediaSessionService : Service() {
         mediaPlayer = MediaPlayer()
         mediaPlayer!!.setOnCompletionListener { mediaPlayer ->
             timeLeft = timeLeft!! - mediaPlayer.duration
-            Log.e("TimeLeft", "$timeLeft out of ${practice!!.duration * 60000}")
 
             if (timeLeft!! < 0) {
                 endPractice()
@@ -180,8 +187,7 @@ class MediaSessionService : Service() {
             }
         } else {
             practice = (intent.getSerializableExtra("practice") as Practice)
-            timeLeft = practice!!.duration * 60000
-            Log.e("TimeLeft", "$timeLeft out of ${practice!!.duration * 60000}")
+            timeLeft = practice!!.duration * 60000 / 100
             val path = MusicRepository(application).getMusicFileFor(
                 practice!!.courseId,
                 practice!!.audioName
@@ -272,6 +278,48 @@ class MediaSessionService : Service() {
 
     override fun onBind(intent: Intent): IBinder? {
         return null
+    }
+
+    private fun sendFinishNotification(record: PracticeRecord) {
+        val resultIntent = Intent(this, EditPracticeRecordActivity::class.java)
+        resultIntent.putExtra("record", record)
+        val resultPendingIntent = PendingIntent.getActivity(
+            this, 0, resultIntent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        getNotificationBuilder(this).apply {
+            setSmallIcon(R.drawable.ic_baseline_self_improvement_24)
+            setContentTitle(getString(R.string.you_have_completed).format(record.practiceName))
+            setContentText(getString(R.string.click_to_edit_record))
+            setContentIntent(resultPendingIntent)
+            setAutoCancel(true)
+        }.build().also { getNotificationManager().notify(889, it) }
+    }
+
+    private fun getNotificationBuilder(context: Context): NotificationCompat.Builder {
+        val channel = getNotificationChannel()
+        return NotificationCompat.Builder(context, channel.id)
+    }
+
+    private fun getNotificationChannel(): NotificationChannel {
+        val notificationManager = getNotificationManager()
+        return notificationManager.getNotificationChannel("3939") ?: run {
+            val channelId = "3939"
+            val name = "HSE meditations channel"
+            val description = "Notification about finishing meditation"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(channelId, name, importance)
+            channel.description = description
+            channel.enableLights(true)
+            channel.lightColor = getColor(R.color.meditation)
+            notificationManager.createNotificationChannel(channel)
+            return channel
+        }
+    }
+
+    private fun getNotificationManager(): NotificationManager {
+        return getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     }
 
     companion object {
